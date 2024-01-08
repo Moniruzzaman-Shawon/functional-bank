@@ -6,6 +6,13 @@ function getInputValue(fieldId){
     return value;
 }
 
+function getinnerTextValue(fieldId){
+    const fieldTag = document.getElementById(fieldId);
+    const fieldValueInText = fieldTag.innerText;
+    const value = parseFloat(fieldValueInText);
+    return value;
+}
+
 function updateTotal(fieldId, amount){
     const totalTag = document.getElementById(fieldId);
     const previousTotalInText = totalTag.innerText;
@@ -32,14 +39,18 @@ function updateBalance(amount, isAdding){
 
 document.getElementById('btn-deposit').addEventListener('click', function(){
     const amount = getInputValue('deposit-field');
-    console.log(amount);
-    updateTotal('deposit-total', amount);
-    updateBalance(amount, true);
+    if(amount > 0){
+        updateTotal('deposit-total', amount);
+        updateBalance(amount, true);
+    }
 })
 
 //handle withdraw
 document.getElementById('btn-withdraw').addEventListener('click',function(){
     const amount = getInputValue('withdraw-field');
-    updateTotal('withdraw-total', amount);  
-    updateBalance(amount, false);
+    const balance = getinnerTextValue('balance-total');
+    if(amount > 0 && amount <= balance ){
+        updateTotal('withdraw-total', amount);  
+        updateBalance(amount, false);
+    }
 })
